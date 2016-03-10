@@ -6,7 +6,7 @@
   "license": "MIT",
   "dependencies": {
     "gulp": "gulpjs/gulp#4.0",
-    "io-global": "*",
+    "io-global": "*"
   },
   "repository": {
     "type": "git",
