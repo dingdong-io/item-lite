@@ -1,12 +1,15 @@
 {
   "name": "item-lite",
   "author": "dingdong",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "项目精简,读取入口文件,将其所有本地a链接文件复制出来,形成精简版",
   "license": "MIT",
   "dependencies": {
     "gulp": "gulpjs/gulp#4.0",
-    "io-global": "*"
+    "gulp-if": "^2.0.0",
+    "gulp-rename": "^1.2.2",
+    "io-global": "*",
+    "transliteration": "^0.1.1"
   },
   "repository": {
     "type": "git",

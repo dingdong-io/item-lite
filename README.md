@@ -21,7 +21,8 @@ npm下载可能受限,翻墙也较慢.推荐国内使用cnpm,在命令行下输�
 ## 使用  
 * 配置  
 进入config.json文件,填写"copyfrom","index","copyto"  
-其中,copyform是优百通项目地址,index是子项目地址,如index.html,wudu.html,它包含了该子项目所有页面的a链接,copyto是拷贝后生成的位置,建议使用绝对路径
+其中,copyform是优百通项目地址,index是子项目地址,如index.html,wudu.html,它包含了该子项目所有页面的a链接,copyto是拷贝后生成的位置,建议使用绝对路径  
+ `"pinyin":true/false`  是否开启拼音模式,该模式会将中文名的html按拼音重命名,入口文件不重命名   
 * 使用  
 完成以上步骤后,在item-lite目录下用命令行输入 `$ gulp` ,即可开始构建.
 

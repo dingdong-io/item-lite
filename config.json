@@ -6,4 +6,6 @@
   ,"index_des":"入口文件,该项目前端链接的集合,如wudu.html"
   ,"copyto":"F:/wrap/io_module/item-lite/demo/lite"
   ,"copyto_des":"copyto内的文件层级与copyfrom是相同的"
+  ,"pinyin":true
+  ,"pinyin_des":"是否开启拼音模式,该模式会将中文名的html按拼音重命名,入口文件不重命名"
 }
