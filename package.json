@@ -1,7 +1,7 @@
 {
   "name": "item-lite",
   "author": "dingdong",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "项目精简,读取入口文件,将其所有本地a链接文件复制出来,形成精简版",
   "license": "MIT",
   "dependencies": {

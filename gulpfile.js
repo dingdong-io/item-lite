@@ -6,9 +6,15 @@ var io = require('io-global')
   //,pinyin = require('pinyin')
 
 
+
+
+
 , tr = require('transliteration').slugify
   , gulpIf = require('gulp-if')
   //,replace = require('gulp-replace')
+
+
+
 
 
 
@@ -24,36 +30,53 @@ var dir = {}
 dir.root = pathChange(config.copyfrom)
 dir.index = pathChange(config.index).replace(/\/$/, '')
 dir.dist = pathChange(config.copyto)
-  //
-  //dir.root = io.path(config.copyfrom).type ==='absolute' ? config.copyfrom+'/' : io.cwd()+'/'+config.copyfrom
-  //dir.index = io.path(config.index).type ==='absolute' ? config.index+'/' : io.cwd()+'/' + config.index
-  //dir.dist = io.path(config.copyto).type ==='absolute' ? config.copyto+'/' : io.cwd()+'/' +config.copyto
-  //io.c(dir.root,dir.dist,dir.index)
+
+//html文件名如是中文,替换
+var basename = function (basename) {
+  var t = basename.split('')
+    , tAll = '';
+  for (var num in t) {
+    //匹配中文 ,由于transliteration 会将非中文的字符,如空格,横杠转成无,所以直接rename较伤
+    tAll += /[\u4E00-\u9FA5\uF900-\uFA2D]/.test(t[num]) ? tr(t[num], {
+      lowercase: false
+      , separator: ''
+    }) : t[num]
+  }
+  return tAll
+}
+
+
 
 gulp.task('default', function () {
   //拷入common
   gulp.src(dir.root + "common/**/*.*")
     .pipe(gulp.dest(dir.dist + 'common/'))
-    //拷入入口链接文件
-  gulp.src(dir.index)
-    .pipe(gulp.dest(dir.dist))
 
+  //拷入入口链接文件
   var distIndex = dir.dist + require('path').relative(dir.root, dir.index)
-    //  io.c(dir.dist+distIndex)
-  if (config.pinyin) {
-    setTimeout(function () {
-      fs.readFile(distIndex, 'utf-8', function (err, data) {
+  fs.readFile(dir.index, 'utf-8', function (err, data) {
+      if (config.pinyin) {
         //中间斜杠也是仅优百通的考虑,不全面
         data = data.replace(/(<a.*?href=".*\/)(.*?)\.html"/ig, function () {
-          return RegExp.$1 + tr(RegExp.$2, {
-            lowercase: false
-            , separator: ''
-          }) + '.html"'
+          var t1 = RegExp.$1
+            , t3 = '';
+          var t2 = RegExp.$2.split('')
+          for (var num in t2) {
+            //中文才转 ,由于transliteration 会将非中文的字符,如空格,横杠转成无……
+            t3 += /[\u4E00-\u9FA5\uF900-\uFA2D]/.test(t2[num]) ? tr(t2[num], {
+              lowercase: false
+              , separator: ''
+            }) : t2[num]
+          }
+
+          return t1 + t3 + '.html"'
+
         })
-        fs.writeFile(distIndex, data, function () {})
-      })
-    }, 2000)
-  }
+      }
+      fs.writeFile(distIndex, data, function () {})
+    })
+    //  return
+
   //异步
   fs.readFile(dir.index, 'utf-8', function (err, data) {
     //  io.c(data)
@@ -66,7 +89,7 @@ gulp.task('default', function () {
 
     for (var i in hrefs) {
 
-      //      if (i === '0') { //activity\layout1\actpay\actsucceed\actsucceed1 13; 35 APP ;0 首页 包括footer8链接
+      //            if (i === '0') { //activity\layout1\actpay\actsucceed\actsucceed1 13; 35 APP ;0 首页 包括footer8链接
       //    io.c(i,typeof i,hrefs[i]) //string
 
       //按第一步遍历,直接生成拷贝
@@ -87,10 +110,7 @@ gulp.task('default', function () {
           //      io.ce('Error: 文件' + dir.index+'中,有链接未找到: '+ e.toString().replace(/Error: File not found with singular glob: (.*)/,'$1') +'"')
           //    })
           .pipe(gulpIf(config.pinyin, rename(function (path) {
-            path.basename = tr(path.basename, {
-              lowercase: false
-              , separator: ''
-            })
+            path.basename = basename(path.basename)
           })))
           .pipe(gulp.dest(dir.dist + root))
 
@@ -116,13 +136,7 @@ gulp.task('default', function () {
               //        io.c(gulp.src(dir.root+pathT+'*.html'))
             gulp.src(dir.root + pathT + '*.html')
               .pipe(gulpIf(config.pinyin, rename(function (path) {
-                path.basename = tr(path.basename, {
-                    lowercase: false
-                    , separator: ''
-                  })
-                  //          path.basename = pinyin(path.basename,{//该插件有声调功能,但无首字母大写
-                  //            style:pinyin.STYLE_NORMAL
-                  //          }).join('')
+                path.basename = basename(path.basename)
               })))
               .pipe(gulp.dest(dir.dist + pathT))
           }
@@ -133,7 +147,7 @@ gulp.task('default', function () {
         io.ce('Error: 文件' + dir.index + '中,有链接未找到: ' + file + '"')
 
       }
-      //      } //i=='0' app设置
+      //            } //i=='0' app设置
     }
 
 
