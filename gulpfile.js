@@ -6,7 +6,7 @@ var io = require('io-global')
 ,path = require('path')
 
 var pathChange = function(str){
-  io.c(io.path(io.path(str).type==='absolute'? str+'/' : io.cwd()+'/'+str).all)
+//  io.c(io.path(io.path(str).type==='absolute'? str+'/' : io.cwd()+'/'+str).all)
 
   return io.path(io.path(str).type==='absolute'? str+'/' : io.cwd()+'/'+str).all
 }
@@ -19,7 +19,7 @@ dir.dist = pathChange(config.copyto)
 //dir.root = io.path(config.copyfrom).type ==='absolute' ? config.copyfrom+'/' : io.cwd()+'/'+config.copyfrom
 //dir.index = io.path(config.index).type ==='absolute' ? config.index+'/' : io.cwd()+'/' + config.index
 //dir.dist = io.path(config.copyto).type ==='absolute' ? config.copyto+'/' : io.cwd()+'/' +config.copyto
-io.c(dir.root,dir.dist,dir.index)
+//io.c(dir.root,dir.dist,dir.index)
 
 gulp.task('default',function(){
   //拷入common
